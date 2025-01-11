@@ -1,7 +1,12 @@
+// src/reducers/blogReducer.js
+
 import {
     FETCH_BLOGS_REQUEST,
     FETCH_BLOGS_SUCCESS,
     FETCH_BLOGS_FAIL,
+    FETCH_BLOG_BY_ID_REQUEST,
+    FETCH_BLOG_BY_ID_SUCCESS,
+    FETCH_BLOG_BY_ID_FAIL,
     CREATE_BLOG_REQUEST,
     CREATE_BLOG_SUCCESS,
     CREATE_BLOG_FAIL,
@@ -15,15 +20,15 @@ import {
 
 const initialState = {
     blogs: [],
+    currentBlog: null,
     loading: false,
     error: null,
 };
 
 const blogReducer = (state = initialState, action) => {
-    const { type, payload } = action;
-
-    switch (type) {
+    switch (action.type) {
         case FETCH_BLOGS_REQUEST:
+        case FETCH_BLOG_BY_ID_REQUEST:
         case CREATE_BLOG_REQUEST:
         case UPDATE_BLOG_REQUEST:
         case DELETE_BLOG_REQUEST:
@@ -35,37 +40,52 @@ const blogReducer = (state = initialState, action) => {
         case FETCH_BLOGS_SUCCESS:
             return {
                 ...state,
-                blogs: payload,
                 loading: false,
+                blogs: action.payload,
+            };
+        case FETCH_BLOG_BY_ID_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                currentBlog: action.payload,
             };
         case CREATE_BLOG_SUCCESS:
             return {
                 ...state,
-                blogs: [payload, ...state.blogs],
                 loading: false,
+                blogs: [...state.blogs, action.payload],
             };
         case UPDATE_BLOG_SUCCESS:
             return {
                 ...state,
-                blogs: state.blogs.map((blog) =>
-                    blog._id === payload._id ? payload : blog
-                ),
                 loading: false,
+                blogs: state.blogs.map((blog) =>
+                    blog._id === action.payload._id ? action.payload : blog
+                ),
+                currentBlog:
+                    state.currentBlog && state.currentBlog._id === action.payload._id
+                        ? action.payload
+                        : state.currentBlog,
             };
         case DELETE_BLOG_SUCCESS:
             return {
                 ...state,
-                blogs: state.blogs.filter((blog) => blog._id !== payload),
                 loading: false,
+                blogs: state.blogs.filter((blog) => blog._id !== action.payload),
+                currentBlog:
+                    state.currentBlog && state.currentBlog._id === action.payload
+                        ? null
+                        : state.currentBlog,
             };
         case FETCH_BLOGS_FAIL:
+        case FETCH_BLOG_BY_ID_FAIL:
         case CREATE_BLOG_FAIL:
         case UPDATE_BLOG_FAIL:
         case DELETE_BLOG_FAIL:
             return {
                 ...state,
                 loading: false,
-                error: payload,
+                error: action.payload,
             };
         default:
             return state;

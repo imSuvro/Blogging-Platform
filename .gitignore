@@ -5,7 +5,7 @@
 # Ignore other common files and folders
 .DS_Store
 *.log
-.env
+# .env
 .vscode
 .idea
 *.sublime-workspace

@@ -1,3 +1,5 @@
+// src/components/Blogs/BlogForm.js
+
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createBlog, updateBlog } from '../../actions/blogActions';
@@ -44,29 +46,54 @@ const BlogForm = () => {
     };
 
     return (
-        <div className="blog-form">
-            <h2>{id ? 'Edit Blog' : 'Create New Blog'}</h2>
-            {blogState.error && <p className="error">{blogState.error}</p>}
-            <form onSubmit={onSubmit}>
-                <input
-                    type="text"
-                    placeholder="Title"
-                    name="title"
-                    value={title}
-                    onChange={onChange}
-                    required
-                />
-                <textarea
-                    placeholder="Content"
-                    name="content"
-                    value={content}
-                    onChange={onChange}
-                    required
-                ></textarea>
-                <button type="submit" disabled={blogState.loading}>
-                    {blogState.loading ? 'Submitting...' : 'Submit'}
-                </button>
-            </form>
+        <div className="flex justify-center items-center py-12 px-4 sm:px-6 lg:px-8">
+            <div className="w-full max-w-2xl bg-gray-100 dark:bg-gray-800 p-8 rounded-lg shadow">
+                <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+                    {id ? 'Edit Blog' : 'Create New Blog'}
+                </h2>
+                {blogState.error && <p className="mb-4 text-red-500">{blogState.error}</p>}
+                <form onSubmit={onSubmit} className="space-y-6">
+                    <div>
+                        <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                            Title
+                        </label>
+                        <input
+                            id="title"
+                            name="title"
+                            type="text"
+                            required
+                            value={title}
+                            onChange={onChange}
+                            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder="Blog Title"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                            Content
+                        </label>
+                        <textarea
+                            id="content"
+                            name="content"
+                            required
+                            value={content}
+                            onChange={onChange}
+                            rows="10"
+                            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
+                            placeholder="Write your blog content here..."
+                        ></textarea>
+                    </div>
+                    <div>
+                        <button
+                            type="submit"
+                            disabled={blogState.loading}
+                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                        >
+                            {blogState.loading ? 'Submitting...' : 'Submit'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

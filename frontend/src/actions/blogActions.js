@@ -17,6 +17,10 @@ export const DELETE_BLOG_REQUEST = 'DELETE_BLOG_REQUEST';
 export const DELETE_BLOG_SUCCESS = 'DELETE_BLOG_SUCCESS';
 export const DELETE_BLOG_FAIL = 'DELETE_BLOG_FAIL';
 
+export const FETCH_BLOG_BY_ID_REQUEST = 'FETCH_BLOG_BY_ID_REQUEST';
+export const FETCH_BLOG_BY_ID_SUCCESS = 'FETCH_BLOG_BY_ID_SUCCESS';
+export const FETCH_BLOG_BY_ID_FAIL = 'FETCH_BLOG_BY_ID_FAIL';
+
 // Fetch All Blogs
 export const fetchBlogs = () => async (dispatch) => {
   dispatch({ type: FETCH_BLOGS_REQUEST });
@@ -70,8 +74,6 @@ export const updateBlog = (id, updatedData) => async (dispatch) => {
     });
   }
 };
-
-// Delete a Blog
 export const deleteBlog = (id) => async (dispatch) => {
   dispatch({ type: DELETE_BLOG_REQUEST });
   try {
@@ -83,7 +85,23 @@ export const deleteBlog = (id) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: DELETE_BLOG_FAIL,
-      payload: err.response.data.msg,
+      payload: err.response?.data?.msg || 'An error occurred while deleting the blog.',
+    });
+  }
+};
+
+export const fetchBlogById = (id) => async (dispatch) => {
+  dispatch({ type: FETCH_BLOG_BY_ID_REQUEST });
+  try {
+    const res = await axios.get(`/api/blogs/${id}`);
+    dispatch({
+      type: FETCH_BLOG_BY_ID_SUCCESS,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: FETCH_BLOG_BY_ID_FAIL,
+      payload: err.response?.data?.msg || 'An error occurred while fetching the blog.',
     });
   }
 };

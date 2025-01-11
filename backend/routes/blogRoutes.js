@@ -1,8 +1,10 @@
 // backend/routes/blogRoutes.js
+
 const express = require('express');
 const router = express.Router();
 const {
     getAllBlogs,
+    getBlogById, // Import the new controller function
     createBlog,
     updateBlog,
     deleteBlog,
@@ -13,6 +15,11 @@ const authMiddleware = require('../middlewares/authMiddleware');
 // @desc    Get all blogs
 // @access  Public
 router.get('/', getAllBlogs);
+
+// @route   GET /api/blogs/:id
+// @desc    Get single blog by ID
+// @access  Public
+router.get('/:id', getBlogById);
 
 // @route   POST /api/blogs
 // @desc    Create a new blog

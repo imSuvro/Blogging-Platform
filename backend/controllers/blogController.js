@@ -86,5 +86,30 @@ exports.deleteBlog = async (req, res) => {
     }
 };
 
+// Get Single Blog by ID
+exports.getBlogById = async (req, res) => {
+    console.log(`GET /api/blogs/${req.params.id} called`);
+    try {
+        const blog = await BlogPost.findById(req.params.id)
+            .populate('author', 'name')
+            .populate({
+                path: 'comments',
+                populate: { path: 'user', select: 'name' }
+            });
+
+        if (!blog) {
+            return res.status(404).json({ msg: 'Blog not found' });
+        }
+
+        res.json(blog);
+    } catch (err) {
+        console.error('Error fetching blog:', err.message);
+        if (err.kind === 'ObjectId') {
+            return res.status(400).json({ msg: 'Invalid blog ID' });
+        }
+        res.status(500).json({ msg: 'Server error' });
+    }
+};
+
 
 
