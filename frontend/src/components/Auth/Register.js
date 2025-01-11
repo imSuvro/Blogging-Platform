@@ -27,11 +27,11 @@ const Register = () => {
     };
 
     // Redirect to home page upon successful registration
-    useEffect(() => {
-        if (auth.isAuthenticated) {
-            navigate('/'); // Redirect to home
-        }
-    }, [auth.isAuthenticated, navigate]);
+    // useEffect(() => {
+    //     if (auth.isAuthenticated) {
+    //         navigate('/'); // Redirect to home
+    //     }
+    // }, [auth.isAuthenticated, navigate]);
 
     return (
         <div className="flex justify-center items-center py-12 px-4 sm:px-6 lg:px-8">
